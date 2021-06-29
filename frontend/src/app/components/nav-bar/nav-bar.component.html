@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-light" style="background-color: #03061c !important; ">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">USC Films</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav nav me-auto mb-2 mb-lg-0">
+          <li id="homeTab" class="nav-item ml-auto">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li id="listTab" class="nav-item ml-auto">
+            <a class="nav-link" href="/mylist">My List</a>
+          </li>
+        </ul>
+
+
+        <ul class="navbar-nav ml-auto">
+          <li>
+            <input
+              style="width: 15rem; border:0; border-bottom:2px solid white; color: white;  background-color:transparent"
+              placeholder="Search" aria-label="Search" id="typeahead-template" type="text" class="" [(ngModel)]="model"
+              [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter"
+              (selectItem)="selectedItem($event)" />
+
+            <ng-template #rt let-r="result" let-t="term">
+              <a [href]="'watch/' + r['media_type'] + '/' + r['id']">
+                <img [src]="'https://image.tmdb.org/t/p/w500' + r['backdrop_path']" class="mr-3" style="width: 7vw;">
+                <ngb-highlight [result]="r.name" [term]="t" style="color: white; height: 5vh;"></ngb-highlight>
+              </a>
+            </ng-template>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+
+
+</body>
+
+</html>
+
+
+
+
+<!-- </nav> -->

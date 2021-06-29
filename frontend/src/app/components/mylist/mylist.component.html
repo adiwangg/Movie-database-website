@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+
+  <div *ngIf="likes.length; else elseBlock">
+    <div *ngIf="!isMobile">
+      <div class="container">
+        <div class="row row-cols-6">
+          <div *ngFor="let like of likes">
+            <a href="{{ like.detail_page_url }}">
+              <div class="col card">
+                <div class="card-img-wrapper">
+                  <img class="card-image w-100" src="https://image.tmdb.org/t/p/w500/{{ like.poster_path }}"
+                    alt="Card image cap" />
+                  <div class="carousel-caption">
+                    <span>{{like.title}}</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isMobile;">
+    <div class="container">
+      <div class="row">
+        <div *ngFor="let like of likes">
+          <a href="{{ like.detail_page_url }}">
+            <div class="col card" style="width: 70%; padding: 0; margin: 2vh auto;">
+              <div class="card-img-wrapper">
+                <img class="card-image w-100" src="https://image.tmdb.org/t/p/w500/{{ like.poster_path }}"
+                  alt="Card image cap" />
+                <div class="carousel-caption" style="display: block;">
+                  <span>{{like.title}}</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <ng-template #elseBlock>
+    <div style="text-align: center;">
+      <h2 class="text-light mt-5">No items found in Watchlist.</h2>
+
+    </div>
+  </ng-template>
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+
+input:focus {
+  outline: none;
+}
+
+::ng-deep .dropdown-menu.show {
+  background-color: #040f38;
+  border: 1px solid gray;
+}
+
+::ng-deep .dropdown-item {
+  background-color: #040f38;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+body {
+  margin-bottom: 2em;;
+}

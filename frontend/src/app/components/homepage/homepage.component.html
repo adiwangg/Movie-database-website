@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>USC Films</title>
+
+</head>
+
+<body>
+<!-- #region Now Playing movies -->
+  <div id="nowPlaying" style="width: 70%; margin:5vh auto">
+    <ngb-carousel #carousel [interval]="5000" [showNavigationIndicators]="!isMobile" [pauseOnHover]="pauseOnHover"
+      [pauseOnFocus]="pauseOnFocus" (slide)="onSlide($event)">
+      <ng-template ngbSlide *ngFor="let movie of nowPlayingMovies; index as i">
+        <a href="watch/movie/{{ movie.id }}" target="_self" rel="nofollow noopener noreferrer">
+          <div class="picsum-img-wrapper">
+            <img src="https://image.tmdb.org/t/p/original/{{movie.backdrop_path}}" alt="" class="w-100" />
+            <div class="carousel-caption" *ngIf="!isMobile">
+              <p>{{movie.title}}</p>
+            </div>
+            <div class="carousel-caption" style="display: block;" *ngIf="isMobile">
+              <p>{{movie.title}}</p>
+            </div>
+          </div>
+        </a>
+      </ng-template>
+    </ngb-carousel>
+  </div>
+<!-- #endregion -->
+
+
+<!-- #region continue watching -->
+  <div id="continueWatching" class="list-carousel" *ngIf="continueWatchings.length">
+    <h2 style="margin-left: 10vw;">Continue Watching</h2>
+
+    <div *ngIf="!isMobile; else elseBlock">
+      <ngb-carousel *ngIf="ncontinueWatchings" [interval]="0" style="padding-left: 8vw; padding-right: 8vw; margin: 1.5em 0;">
+        <ng-template ngbSlide *ngFor="let chunck of ncontinueWatchings;">
+          <div class="container-fluid">
+            <div class="row row-cols-6">
+              <div *ngFor="let watch of chunck">
+                <a href="{{ watch.detail_page_url }}">
+                  <div class="card col">
+                    <div class="card-img-wrapper">
+                      <img class="card-img" src="https://image.tmdb.org/t/p/w500/{{ watch.poster_path }}"
+                        alt="Card image cap" />
+                      <div class="carousel-caption">
+                        <span>{{watch.title}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </div>
+
+    <ng-template #elseBlock>
+      <ngb-carousel *ngIf="continueWatchings" [showNavigationIndicators]=false [interval]="0"
+        style="padding-left: 8vw; padding-right: 8vw; margin: 1.5em 0;">
+        <ng-template ngbSlide *ngFor="let watch of continueWatchings;">
+          <div class="container-fluid">
+            <div class="row ">
+              <a href="{{ watch.detail_page_url }}">
+                <div class="card col" style="padding: 0; width: 70%; margin: 2vh auto;">
+                  <div class="card-img-wrapper">
+                    <img class="card-img" src="https://image.tmdb.org/t/p/w500/{{ watch.poster_path }}"
+                      alt="Card image cap" />
+                    <div class="carousel-caption" style="display: block; width: 100%;">
+                      <span>{{watch.title}}</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </ng-template>
+  </div>
+<!-- #endregion -->
+
+
+<!-- #region popular movies -->
+  <div id="popularMovie" class="list-carousel">
+    <h2 style="margin-left: 10vw;">Popular Movies</h2>
+
+    <div *ngIf="!isMobile;">
+      <ngb-carousel *ngIf="npopularMovies" style="padding-left: 8vw; padding-right: 8vw; margin: 1.5em 0;" [interval]="0">
+        <ng-template ngbSlide *ngFor="let chunck of npopularMovies;">
+          <div class="container-fluid">
+            <div class="row row-cols-6">
+              <div *ngFor="let movie of chunck">
+                <a href="/watch/movie/{{movie.id}}">
+                  <div class="card col">
+                    <div class="card-img-wrapper">
+                      <img class="card-img" src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}"
+                        alt="Card image cap" />
+                      <div class="carousel-caption">
+                        <span>{{movie.title}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </div>
+
+    <div *ngIf="isMobile;">
+      <ngb-carousel *ngIf="popularMovies" [showNavigationIndicators]=false [interval]="0"
+        style="padding-left: 8vw; padding-right: 8vw; margin: 1.5em 0;">
+        <ng-template ngbSlide *ngFor="let movie of popularMovies;">
+          <div class="container-fluid">
+            <div class="row ">
+              <a href="/watch/movie/{{movie.id}}">
+                <div class="card col" style="padding: 0; width: 70%; margin: 2vh auto;">
+                  <div class="card-img-wrapper">
+                    <img class="card-img " src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}"
+                      alt="Card image cap" />
+                    <div class="carousel-caption" style="display: block; width: 100%;">
+                      <span>{{movie.title}}</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </div>
+  </div>
+<!-- #endregion -->
+
+
+<!-- #region Top rated movies -->
+  <div id="topRatedMovie" class="list-carousel">
+    <h2 style="margin-left: 10vw;">Top Rated Movies</h2>
+
+    <div *ngIf="!isMobile;">
+      <ngb-carousel *ngIf="ntopRatedMovies" style="padding-left: 8vw; padding-right: 8vw; margin: 1.5em 0;" [interval]="0">
+        <ng-template ngbSlide *ngFor="let chunck of ntopRatedMovies;">
+          <div class="container-fluid">
+            <div class="row row-cols-6">
+              <div *ngFor="let movie of chunck">
+                <a href="/watch/movie/{{movie.id}}">
+                  <div class="card col">
+                    <div class="card-img-wrapper">
+                      <img class="card-img" src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}"
+                        alt="Card image cap" />
+                      <div class="carousel-caption">
+                        <span>{{movie.title}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </div>
+
+    <div *ngIf="isMobile;">
+      <ngb-carousel *ngIf="topRatedMovies" [showNavigationIndicators]=false [interval]="0"
+        style="padding-left: 8vw; padding-right: 8vw; margin: 1.5em 0;">
+        <ng-template ngbSlide *ngFor="let movie of topRatedMovies;">
+          <div class="container-fluid">
+            <div class="row ">
+              <a href="/watch/movie/{{movie.id}}">
+                <div class="card col" style="padding: 0; width: 70%; margin: 2vh auto;">
+                  <div class="card-img-wrapper">
+                    <img class="card-img " src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}"
+                      alt="Card image cap" />
+                    <div class="carousel-caption" style="display: block; width: 100%;">
+                      <span>{{movie.title}}</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </div>
+  </div>
+<!-- #endregion -->
+
+
+<!-- #region trending movies -->
+  <div id="trendingMovie" class="list-carousel">
+    <h2 style="margin-left: 10vw;">Trending Movies</h2>
+
+    <div *ngIf="!isMobile;">
+      <ngb-carousel *ngIf="ntrendingMovies" style="padding-left: 8vw; padding-right: 8vw; margin: 1.5em 0;" [interval]="0">
+        <ng-template ngbSlide *ngFor="let chunck of ntrendingMovies;">
+          <div class="container-fluid">
+            <div class="row row-cols-6">
+              <div *ngFor="let movie of chunck">
+                <a href="/watch/movie/{{movie.id}}">
+                  <div class="card col">
+                    <div class="card-img-wrapper">
+                      <img class="card-img" src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}"
+                        alt="Card image cap" />
+                      <div class="carousel-caption">
+                        <span>{{movie.title}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </div>
+
+    <div *ngIf="isMobile;">
+      <ngb-carousel *ngIf="trendingMovies" [showNavigationIndicators]=false [interval]="0"
+        style="padding-left: 8vw; padding-right: 8vw; margin: 1.5em 0;">
+        <ng-template ngbSlide *ngFor="let movie of trendingMovies;">
+          <div class="container-fluid">
+            <div class="row ">
+              <a href="/watch/movie/{{movie.id}}">
+                <div class="card col" style="padding: 0; width: 70%; margin: 2vh auto;">
+                  <div class="card-img-wrapper">
+                    <img class="card-img " src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}"
+                      alt="Card image cap" />
+                    <div class="carousel-caption" style="display: block; width: 100%;">
+                      <span>{{movie.title}}</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </div>
+  </div>
+<!-- #endregion -->
+
+
+<!-- #region popular TV shows -->
+  <div id="popularTv" class="list-carousel">
+    <h2 style="margin-left: 10vw;">Popular TV Shows</h2>
+
+    <div *ngIf="!isMobile;">
+      <ngb-carousel *ngIf="npopularTvs" style="padding-left: 8vw; padding-right: 8vw; margin: 1.5em 0;" [interval]="0">
+        <ng-template ngbSlide *ngFor="let chunck of npopularTvs;">
+          <div class="container-fluid">
+            <div class="row row-cols-6">
+              <div *ngFor="let tv of chunck">
+                <a href="/watch/tv/{{tv.id}}">
+                  <div class="card col">
+                    <div class="card-img-wrapper">
+                      <img class="card-img" src="https://image.tmdb.org/t/p/w500/{{ tv.poster_path }}"
+                        alt="Card image cap" />
+                      <div class="carousel-caption">
+                        <span>{{tv.name}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </div>
+
+    <div *ngIf="isMobile;">
+      <ngb-carousel *ngIf="popularTvs" [showNavigationIndicators]=false style="padding-left: 8vw; padding-right: 8vw; margin: 1.5em 0;" [interval]="0">
+        <ng-template ngbSlide *ngFor="let tv of popularTvs;">
+          <div class="container-fluid">
+            <div class="row ">
+              <a href="/watch/tv/{{tv.id}}">
+                <div class="card col" style="padding: 0; width: 70%; margin: 2vh auto;">
+                  <div class="card-img-wrapper">
+                    <img class="card-img " src="https://image.tmdb.org/t/p/w500/{{ tv.poster_path }}"
+                      alt="Card image cap" />
+                    <div class="carousel-caption" style="display: block; width: 100%;">
+                      <span>{{tv.name}}</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </div>
+  </div>
+<!-- #endregion -->
+
+
+<!-- #region top rated TV shows -->
+  <div id="topRatedTv" class="list-carousel">
+    <h2 style="margin-left: 10vw;">Top Rated TV Shows</h2>
+
+    <div *ngIf="!isMobile;">
+      <ngb-carousel *ngIf="ntopRatedTvs" style="padding-left: 8vw; padding-right: 8vw; margin: 1.5em 0;" [interval]="0">
+        <ng-template ngbSlide *ngFor="let chunck of ntopRatedTvs;">
+          <div class="container-fluid">
+            <div class="row row-cols-6">
+              <div *ngFor="let tv of chunck">
+                <a href="/watch/tv/{{tv.id}}">
+                  <div class="card col">
+                    <div class="card-img-wrapper">
+                      <img class="card-img" src="https://image.tmdb.org/t/p/w500/{{ tv.poster_path }}"
+                        alt="Card image cap" />
+                      <div class="carousel-caption">
+                        <span>{{tv.name}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </div>
+
+    <div *ngIf="isMobile;">
+      <ngb-carousel *ngIf="topRatedTvs" [showNavigationIndicators]=false style="padding-left: 8vw; padding-right: 8vw; margin: 1.5em 0;" [interval]="0">
+        <ng-template ngbSlide *ngFor="let tv of topRatedTvs;">
+          <div class="container-fluid">
+            <div class="row ">
+              <a href="/watch/tv/{{tv.id}}">
+                <div class="card col" style="padding: 0; width: 70%; margin: 2vh auto;">
+                  <div class="card-img-wrapper">
+                    <img class="card-img " src="https://image.tmdb.org/t/p/w500/{{ tv.poster_path }}"
+                      alt="Card image cap" />
+                    <div class="carousel-caption" style="display: block; width: 100%;">
+                      <span>{{tv.name}}</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </div>
+  </div>
+<!-- #endregion -->
+
+
+<!-- #region trending TV shows -->
+  <div id="trendingTv" class="list-carousel">
+    <h2 style="margin-left: 10vw;">Trending TV Shows</h2>
+
+    <div *ngIf="!isMobile;">
+      <ngb-carousel *ngIf="ntrendingTvs" style="padding-left: 8vw; padding-right: 8vw; margin: 1.5em 0;" [interval]="0">
+        <ng-template ngbSlide *ngFor="let chunck of ntrendingTvs;">
+          <div class="container-fluid">
+            <div class="row row-cols-6">
+              <div *ngFor="let tv of chunck">
+                <a href="/watch/tv/{{tv.id}}">
+                  <div class="card col">
+                    <div class="card-img-wrapper">
+                      <img class="card-img" src="https://image.tmdb.org/t/p/w500/{{ tv.poster_path }}"
+                        alt="Card image cap" />
+                      <div class="carousel-caption">
+                        <span>{{tv.name}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </div>
+
+    <div *ngIf="isMobile;">
+      <ngb-carousel *ngIf="trendingTvs" [showNavigationIndicators]=false style="padding-left: 8vw; padding-right: 8vw; margin: 1.5em 0;" [interval]="0">
+        <ng-template ngbSlide *ngFor="let tv of trendingTvs;">
+          <div class="container-fluid">
+            <div class="row ">
+              <a href="/watch/tv/{{tv.id}}">
+                <div class="card col" style="padding: 0; width: 70%; margin: 2vh auto;">
+                  <div class="card-img-wrapper">
+                    <img class="card-img " src="https://image.tmdb.org/t/p/w500/{{ tv.poster_path }}"
+                      alt="Card image cap" />
+                    <div class="carousel-caption" style="display: block; width: 100%;">
+                      <span>{{tv.name}}</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+    </div>
+  </div>
+<!-- #endregion -->
+
+</body>
+
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>USC Films</title>
+</head>
+
+<body>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0"
+    nonce="qr3pa7op"></script>
+
+  <div class="container">
+
+    <div id="detail_info_container" style="margin-bottom: 2vh;" *ngIf="tv">
+      <div class="row">
+        <div class="col-lg-8 embed-responsive embed-responsive-16by9">
+          <youtube-player videoId="{{ video }}" suggestedQuality="highres">
+          </youtube-player>
+        </div>
+
+        <div class="intro col-lg-4 pl-4">
+          <h1 class="text-light">{{ tv.title }}</h1>
+          <p class="font-italic">{{ tv.tagline }}</p>
+          <p> &#9733; {{ tv.vote_average }} | {{ tv.runtime }}</p>
+          <span><span class="text-light">Genres: </span>{{ tv.genres }}</span><br>
+          <span><span class="text-light">Spoken Languages: </span>{{ tv.spoken_languages }}</span><br>
+
+          <br>
+
+          <div *ngIf="addedToLikes; else elseBlock" style="margin-bottom: 1vh;">
+            <button class="btn btn-primary" (click)="removeLikes()">Remove from Watchlist</button>
+          </div>
+          <ng-template #elseBlock>
+            <div style="margin-bottom: 1vh;">
+              <button class="btn btn-primary" (click)="addLikes()">Add to Watchlist</button>
+            </div>
+          </ng-template>
+
+          <ngb-alert #selfClosingAlert *ngIf="successMessage && !dangerMessage" type="success" (closed)="successMessage = ''">{{
+            successMessage }}
+          </ngb-alert>
+          <ngb-alert #selfClosingAlert *ngIf="dangerMessage && !successMessage" type="danger" (closed)="dangerMessage = ''">{{
+            dangerMessage }}
+          </ngb-alert>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- #region description -->
+    <div id="description">
+      <h4 class="text-light">Description</h4>
+      <p>{{ tv.overview }}</p>
+    </div>
+    <!-- #endregion -->
+
+
+    <!-- #region share -->
+    <div id="share" style="overflow: hidden; margin-bottom: 2vh;">
+      <h5 class="text-light">Share</h5>
+      <div id="twitter-share-button">
+        <a class="twitter-share-button float" [href]="twitter_url" data-size="large" target="_blank">
+          <i class="fab fa-twitter fa-2x"></i></a>
+      </div>
+
+      <div class="fb-share-button float" data-href="https://www.youtube.com/watch?v=3od-kQMTZ9M" data-layout="button"
+        data-size="small"><a target="_blank" [href]="facebook_url" class="fb-xfbml-parse-ignore"><i
+            class="fab fa-facebook-square fa-2x"></i></a>
+      </div>
+    </div>
+    <!-- #endregion -->
+
+
+    <!-- #region cast  -->
+    <div id="cast" *ngIf="cast.length" style="margin-bottom: 2vh; margin-top: 5vh;">
+      <h2 class="text-light">Full Cast and Crew</h2>
+
+      <div id="cast_modal">
+        <ng-template #content let-modal>
+          <div class="modal-header" style="color: black;">
+            <h4 class="modal-title">{{ cast_detail.name }}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="color: black;">
+
+            <div class="container">
+              <div class="row">
+                <div class="col-sm-5">
+                  <div *ngIf="cast_detail.profile_path">
+                    <img src="https://image.tmdb.org/t/p/w500{{cast_detail.profile_path}}" class="w-100">
+                  </div>
+                </div>
+                <div class="col">
+                  <div *ngIf="cast_detail.birthday"><span>Birth: {{cast_detail.birthday}}</span><br></div>
+                  <div *ngIf="cast_detail.place_of_birth"><span>Birth Place: {{cast_detail.place_of_birth}}</span><br>
+                  </div>
+                  <div *ngIf="cast_detail.gender"><span>Gender: {{cast_detail.gender}}</span><br></div>
+                  <div *ngIf="cast_detail.homepage"><span>Website: <a target="_blank"
+                        href="{{cast_detail.homepage }}">{{cast_detail.homepage }}</a></span><br></div>
+                  <div *ngIf="cast_detail.known_for_department"><span>Known for:
+                      {{cast_detail.known_for_department}}</span><br></div>
+                  <div *ngIf="cast_detail.also_known_as"><span>Also Known as:
+                      {{cast_detail.also_known_as}}</span><br></div>
+
+                  <div id="social_media" style="overflow: hidden; margin-top: 2vh;">
+                    <div *ngIf="cast_social_detail.imdb_id">
+                      <a href="http://imdb.com/name/{{cast_social_detail.imdb_id}}" target="_blank"
+                        triggers="mouseenter:mouseleave" ngbPopover="Visit IMDB"><i
+                          class="fab fa-imdb fa-2x float"></i></a>
+                    </div>
+                    <div *ngIf="cast_social_detail.instagram_id">
+                      <a href="https://www.instagram.com/{{cast_social_detail.instagram_id}}" target="_blank"
+                        triggers="mouseenter:mouseleave" ngbPopover="Visit Instagram"><i
+                          class="fab fa-instagram fa-2x float"></i></a>
+                    </div>
+                    <div *ngIf="cast_social_detail.facebook_id">
+                      <a href="https://www.facebook.com/{{cast_social_detail.facebook_id}}" target="_blank"
+                        triggers="mouseenter:mouseleave" ngbPopover="Visit Facebook"><i
+                          class="fab fa-facebook-square fa-2x float"></i></a>
+                    </div>
+                    <div *ngIf="cast_social_detail.twitter_id">
+                      <a href="https://twitter.com/{{cast_social_detail.twitter_id}}" target="_blank"
+                        triggers="mouseenter:mouseleave" ngbPopover="Visit Twitter"><i
+                          class="fab fa-twitter fa-2x float"></i></a>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div id="biography" *ngIf="cast_detail.biography" class="mx-3 pt-2">
+              <h3>Biography</h3>
+              <p>{{ cast_detail.biography }}</p>
+            </div>
+
+          </div>
+
+        </ng-template>
+      </div>
+
+
+      <div class="row flex-row flex-nowrap" style="overflow-x:auto;">
+        <div *ngFor="let person of cast">
+          <div (click)="openModal(content, person.id)">
+            <div *ngIf="person.profile_path != null">
+              <div class="card col">
+                <img class="card-img-top" src="https://image.tmdb.org/t/p/w500/{{ person.profile_path }}"
+                  alt="Card image cap" />
+                <div class="card-body">
+                  <div class="card-text" style="text-align: center; color: black;">
+                    <span class="font-weight-bold">{{ person.name }}</span><br>
+                    <span class="font-weight-bold center">AS</span><br>
+                    <span>{{ person.character }}</span><br>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- #endregion -->
+
+
+    <!-- #region reviews -->
+    <div id="reviews" style="margin:3rem 0;" *ngIf="reviews.length">
+      <h2 class="text-light">Reviews <span class="text-muted">{{reviews.length}}</span></h2>
+      <div *ngFor="let review of reviews">
+        <div class="card mb-3 mt-1" style="padding-top:2vh; padding-left: 3vw;">
+          <div class="row no-gutters">
+            <div class="col-sm-2">
+              <img id="avatar" src="{{ review.avatar_path }}" class="img-fluid" alt="">
+            </div>
+            <div class="col-sm-10" style="color: black;">
+              <div class="card-block p-2">
+                <h4 class="card-title ">A review created by {{ review.author }}
+                  <span
+                    style="width:fit-content; padding: 0.4vh 1vh; border-radius: 2vh; background-color: black; color: white;">&#9733;{{
+                    review.rating }}
+                  </span>
+                </h4>
+                <br>
+                <p class="card-text text-muted">Written by {{ review.author }} on {{ review.created_at }}</p>
+                <p class="card-text ellipsis">{{ review.content }}</p>
+                <a href="{{ review.url }}" target="_blank">Read the rest</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- #endregion -->
+
+
+    <!-- #region recommendation -->
+    <div id="recommendedTv" class="list-carousel" style="margin:5em 2em" *ngIf="recommended.length">
+      <h3 class="text-light">Recommended TV Shows</h3>
+
+      <div *ngIf="!isMobile;" class="desktop">
+        <ngb-carousel *ngIf="recommended_2d" [interval]="0">
+          <ng-template ngbSlide *ngFor="let chunck of recommended_2d;">
+            <div class="container-fluid">
+              <div class="row row-cols-6">
+                <div *ngFor="let tv of chunck">
+                  <a href="/watch/tv/{{ tv.id }}">
+                    <div class="card col">
+                      <div class="card-img-wrapper">
+                        <img class="card-img" src="https://image.tmdb.org/t/p/w500/{{ tv.poster_path }}"
+                          alt="Card image cap" />
+                        <div class="carousel-caption">
+                          <span>{{tv.name}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-carousel>
+      </div>
+
+      <div *ngIf="isMobile;">
+        <ngb-carousel *ngIf="recommended" [showNavigationIndicators]=false [interval]="0"
+          style="padding-left: 8vw; padding-right: 8vw;">
+          <ng-template ngbSlide *ngFor="let tv of recommended;">
+            <div class="container-fluid">
+              <div class="row ">
+                <a href="/watch/tv/{{ tv.id }}">
+                  <div class="card col" style="padding: 0; width: 70%; margin: 2vh auto;">
+                    <div class="card-img-wrapper">
+                      <img class="card-img " src="https://image.tmdb.org/t/p/w500/{{ tv.poster_path }}"
+                        alt="Card image cap" />
+                      <div class="carousel-caption" style="display: block; width: 100%;">
+                        <span>{{tv.name}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-carousel>
+      </div>
+    </div>
+    <!-- #endregion -->
+
+
+    <!-- #region similar -->
+    <div id="similarTv" class="list-carousel" style="margin:5em 2em" *ngIf="similars.length">
+      <h3 class="text-light">Similar TV Shows</h3>
+
+      <div *ngIf="!isMobile;" class="desktop">
+        <ngb-carousel *ngIf="similars_2d" [interval]="0">
+          <ng-template ngbSlide *ngFor="let chunck of similars_2d;">
+            <div class="container-fluid">
+              <div class="row row-cols-6">
+                <div *ngFor="let tv of chunck">
+                  <a href="/watch/tv/{{ tv.id }}">
+                    <div class="card col">
+                      <div class="card-img-wrapper">
+                        <img class="card-img" src="https://image.tmdb.org/t/p/w500/{{ tv.poster_path }}"
+                          alt="Card image cap" />
+                        <div class="carousel-caption">
+                          <span>{{ tv.name }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-carousel>
+      </div>
+
+      <div *ngIf="isMobile;">
+        <ngb-carousel *ngIf="similars" [showNavigationIndicators]=false style="padding-left: 8vw; padding-right: 8vw;" [interval]="0">
+          <ng-template ngbSlide *ngFor="let tv of similars;">
+            <div class="container-fluid">
+              <div class="row ">
+                <a href="/watch/tv/{{ tv.id }}">
+                  <div class="card col" style="padding: 0; width: 70%; margin: 2vh auto;">
+                    <div class="card-img-wrapper">
+                      <img class="card-img " src="https://image.tmdb.org/t/p/w500/{{ tv.poster_path }}"
+                        alt="Card image cap" />
+                      <div class="carousel-caption" style="display: block; width: 100%;">
+                        <span>{{ tv.name }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-carousel>
+      </div>
+    </div>
+    <!-- #endregion -->
+
+  </div>
+</body>
+
+</html>

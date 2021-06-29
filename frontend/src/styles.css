@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~@fortawesome/fontawesome-free/css/all.css";
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+
+body {
+  background-color: #040f38;
+  color: #d8deed;
+
+}
+
+::-webkit-scrollbar {
+  height: 0.5em;
+  width: 0.5em;
+}
+
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgb(255, 255, 255);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  border-radius: 10px;
+}
+
+*:focus {outline : none}

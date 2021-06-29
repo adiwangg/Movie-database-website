@@ -1,0 +1,144 @@
+#reviews a {
+  text-decoration: underline;
+}
+
+.ellipsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
+}
+
+.modal-body {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+#avatar {
+  object-fit: cover;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+.fa-twitter {
+  color: #1da1f2;
+}
+
+.fa-imdb {
+  color: #dba506;
+}
+
+.fa-instagram {
+  color: #bc2a8d;
+}
+
+.fa-facebook-square {
+  color: #4267b2;
+}
+
+.float {
+  float: left;
+  margin-right: 5px;
+}
+
+#cast .card {
+  padding: 0;
+  margin: 0.5rem;
+  border-radius: 1em;
+  border: none;
+  width: 10.8rem;
+}
+
+#cast .card-img-top {
+  border-radius: 1em 1em 0 0;
+}
+
+#cast .card:hover {
+  cursor: pointer;
+}
+
+#reviews .card {
+  padding: 1.5vw;
+  border-radius: 0.5rem;
+}
+
+/* card-img */
+.list-carousel {
+  margin-bottom: 2vw;
+}
+
+.list-carousel .card {
+  border: hidden;
+  padding: 2vh;
+  background-color: transparent;
+}
+
+.list-carousel .carousel-indicators {
+  transform: translateY(2em);
+}
+
+.desktop .carousel-control-prev {
+  transform: translateX(-6em);
+}
+
+.desktop .carousel-control-next {
+  transform: translateX(6em);
+}
+
+.card-img-wrapper:hover {
+  width: 100%;
+  transform: scale(1.1);
+}
+
+.card-img-wrapper:hover .carousel-caption {
+  display: block;
+}
+
+.card-img-wrapper div.carousel-caption {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.5) 20%,
+    rgba(0, 0, 0, 0.9) 55%
+  );
+  width: 100%;
+  height: 30%;
+}
+
+.card-img-wrapper .carousel-caption span {
+  font-size: 0.9rem;
+  padding-right: 2vh;
+  padding-bottom: 1vh;
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+}
+/* end card-img */
+
+.carousel-caption {
+  display: none;
+}
+
+div.carousel-caption {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.5) 20%,
+    rgba(0, 0, 0, 0.9) 55%
+  );
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 25%;
+}
+
+.carousel-caption p {
+  position: absolute;
+  font-size: 1rem;
+  bottom: 0;
+  left: 10%;
+}
